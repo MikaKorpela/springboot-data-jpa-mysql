@@ -1,0 +1,38 @@
+package com.pikecape.springboot.data.model;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "employers")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
+public class Employer {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Integer employerId;
+
+  String name;
+
+  @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = Person.class)
+  @JsonManagedReference
+  List<Person> employees;
+
+  LocalDateTime createdAt;
+  LocalDateTime updatedAt;
+}
